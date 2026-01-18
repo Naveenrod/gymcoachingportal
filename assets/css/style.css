@@ -6,17 +6,18 @@
 }
 
 :root {
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --secondary-color: #64748b;
-    --success-color: #10b981;
-    --danger-color: #ef4444;
-    --warning-color: #f59e0b;
-    --info-color: #3b82f6;
-    --bg-color: #f8fafc;
-    --text-color: #1e293b;
-    --border-color: #e2e8f0;
-    --card-bg: #ffffff;
+    /* Warm, Earthy Color Theme - Inspired by Building Her Coaching */
+    --primary-color: #8B6F47;        /* Warm brown - main brand color */
+    --primary-hover: #6E5636;        /* Darker brown on hover */
+    --secondary-color: #A0826D;      /* Light tan - secondary elements */
+    --success-color: #6B8E6F;        /* Sage green - success states */
+    --danger-color: #C17767;         /* Terracotta - errors/warnings */
+    --warning-color: #D4A574;        /* Warm amber - caution states */
+    --info-color: #8B7E74;           /* Warm taupe - informational */
+    --bg-color: #F5F1EB;             /* Warm cream background */
+    --text-color: #3E2723;           /* Dark brown text */
+    --border-color: #E5DDD5;         /* Light tan borders */
+    --card-bg: #FDFCFA;              /* Off-white cards */
 }
 
 body {
