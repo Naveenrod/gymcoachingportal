@@ -30,6 +30,13 @@ CREATE TABLE IF NOT EXISTS clients (
     membership_end_date DATE,
     notes TEXT,
     status ENUM('Active', 'Inactive', 'On Hold') DEFAULT 'Active',
+    -- Check-in fields
+    loom_link VARCHAR(500),
+    package VARCHAR(100),
+    check_in_frequency VARCHAR(50),
+    check_in_day VARCHAR(50),
+    submitted ENUM('Submitted', '') DEFAULT '',
+    rank VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
