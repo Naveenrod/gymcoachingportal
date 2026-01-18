@@ -706,64 +706,74 @@ table a:hover {
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap');
 
 .checkin-container {
-    background-color: var(--card-bg);
+    background-color: #ffffff;
     padding: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .checkin-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-align: left;
     padding-bottom: 1rem;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .checkin-logo {
     font-family: 'Dancing Script', 'Brush Script MT', 'Lucida Handwriting', cursive;
-    font-size: 2.5rem;
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
+    font-size: 2.25rem;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
 }
 
 .checkin-title {
-    font-size: 1.25rem;
-    color: var(--secondary-color);
-    font-weight: 500;
-    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #6b7280;
+    font-weight: 400;
+    margin-top: 0.25rem;
 }
 
 .checkin-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.875rem;
-    background-color: white;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    box-shadow: none;
 }
 
 .checkin-table thead {
-    background-color: #f8f9fa;
+    background-color: #f3f4f6;
     position: sticky;
     top: 0;
     z-index: 10;
 }
 
 .checkin-table th {
-    padding: 0.875rem 0.75rem;
+    padding: 0.625rem 0.5rem;
     text-align: left;
     font-weight: 600;
-    color: var(--text-color);
-    border-bottom: 2px solid var(--border-color);
+    color: #1f2937;
+    border: 1px solid #d1d5db;
     white-space: nowrap;
-    background-color: #f8f9fa;
+    background-color: #f3f4f6;
+    font-size: 0.75rem;
+    text-transform: none;
 }
 
 .checkin-table td {
-    padding: 0.75rem;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
     vertical-align: middle;
-    background-color: white;
+    background-color: #ffffff;
+    font-size: 0.8125rem;
+}
+
+.checkin-table tbody tr {
+    background-color: #ffffff;
 }
 
 .checkin-table tbody tr:hover {
@@ -778,24 +788,41 @@ table a:hover {
     background-color: #f9fafb;
 }
 
+/* Ensure submitted cells maintain green even on hover */
+.checkin-table tbody tr:hover td.submitted-cell.submitted-active,
+.checkin-table tbody tr:nth-child(even):hover td.submitted-cell.submitted-active {
+    background-color: #d1fae5 !important;
+}
+
 .checkin-table input[type="text"],
 .checkin-table input[type="url"],
 .checkin-table select {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #d1d5db;
-    border-radius: 0.25rem;
+    border-radius: 0.125rem;
     font-size: 0.875rem;
     font-family: inherit;
-    background-color: white;
+    background-color: #ffffff;
 }
 
 .checkin-table input[type="text"]:focus,
 .checkin-table input[type="url"]:focus,
 .checkin-table select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+    outline: 2px solid #2563eb;
+    outline-offset: -2px;
+    border-color: #2563eb;
+    background-color: #ffffff;
+}
+
+/* Special styling for submitted select when value is Submitted */
+.checkin-table select[name="submitted"] {
+    transition: background-color 0.2s;
+}
+
+.checkin-table select[name="submitted"] option[value="Submitted"] {
+    background-color: #d1fae5;
+    color: #065f46;
 }
 
 .client-name-cell {
@@ -832,6 +859,42 @@ table a:hover {
 .submitted-cell {
     text-align: center;
     min-width: 100px;
+    background-color: #ffffff;
+    transition: background-color 0.2s;
+}
+
+/* Green background for submitted cells - matching Excel */
+.submitted-cell.submitted-active {
+    background-color: #d1fae5 !important;
+}
+
+.submitted-cell select {
+    background-color: transparent;
+    border: 1px solid #d1d5db;
+    transition: background-color 0.2s;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.125rem;
+    font-size: 0.875rem;
+}
+
+.submitted-cell.submitted-active select {
+    background-color: #d1fae5 !important;
+    color: #065f46;
+    font-weight: 600;
+    border-color: #a7f3d0;
+}
+
+.submitted-cell select:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: -2px;
+    border-color: #2563eb;
+}
+
+.submitted-cell select option[value="Submitted"] {
+    background-color: #d1fae5;
+    color: #065f46;
+    font-weight: 600;
 }
 
 .submitted-badge {
