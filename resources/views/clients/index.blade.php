@@ -8,6 +8,13 @@
     <a href="{{ route('clients.create') }}" class="btn btn-primary">Add New Client</a>
 </div>
 
+<div class="stats-row">
+    <div class="stat-card">
+        <h3>{{ $clients->total() }}</h3>
+        <p>Total Clients</p>
+    </div>
+</div>
+
 <div class="filters">
     <form method="GET" action="" class="filter-form">
         <input type="text" name="search" placeholder="Search clients..." value="{{ request('search') }}">
@@ -22,13 +29,6 @@
             <a href="{{ route('clients.index') }}" class="btn btn-secondary">Clear</a>
         @endif
     </form>
-</div>
-
-<div class="stats-row">
-    <div class="stat-card">
-        <h3>{{ $clients->count() }}</h3>
-        <p>Total Clients</p>
-    </div>
 </div>
 
 <div class="table-container">
@@ -71,4 +71,6 @@
         </tbody>
     </table>
 </div>
+
+{{ $clients->appends(request()->query())->links() }}
 @endsection

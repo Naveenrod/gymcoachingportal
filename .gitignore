@@ -16,6 +16,29 @@ Thumbs.db
 # Environment
 .env
 .env.local
+.env.production
 
 # Logs
 *.log
+storage/logs/*
+!storage/logs/.gitkeep
+
+# Laravel framework cache
+storage/framework/views/*.php
+storage/framework/cache/*
+!storage/framework/cache/.gitkeep
+storage/framework/sessions/*
+!storage/framework/sessions/.gitkeep
+
+# Testing
+.phpunit.result.cache
+.phpunit.cache/
+
+# Backup files
+*.bak
+
+# Node
+/node_modules
+/public/build
+/public/hot
+/public/storage

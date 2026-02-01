@@ -1,0 +1,17 @@
+.git
+.gitignore
+.env
+.env.production
+vendor
+node_modules
+storage/framework/views/*.php
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/logs/*
+*.bak
+.phpunit.result.cache
+tests
+.docker
+docker-compose.yml
+Dockerfile
+.github

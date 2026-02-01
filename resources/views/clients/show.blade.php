@@ -86,7 +86,10 @@
     @endif
 
     <div class="details-section">
-        <h2>Recent Appointments</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>Recent Appointments</h2>
+            <a href="{{ route('appointments.create', ['client_id' => $client->id]) }}" class="btn btn-sm btn-primary">New Appointment</a>
+        </div>
         @if($client->appointments->isEmpty())
             <p>No appointments scheduled yet.</p>
         @else

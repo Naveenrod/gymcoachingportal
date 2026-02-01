@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class AuthController extends Controller
 {
     public function showLogin()
     {
+        if (Auth::check()) {
+            return redirect($this->redirectBasedOnRole(Auth::user()));
+        }
+
         return view('auth.login');
     }
 
@@ -20,19 +23,30 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('username', $credentials['username'])->first();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-        if ($user && password_verify($credentials['password'], $user->password)) {
-            session(['user_id' => $user->id, 'full_name' => $user->full_name]);
-            return redirect()->intended('/dashboard');
+            return redirect()->intended($this->redirectBasedOnRole(Auth::user()));
         }
 
         return back()->withErrors(['username' => 'Invalid credentials.'])->withInput();
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->flush();
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect('/login');
+    }
+
+    protected function redirectBasedOnRole($user): string
+    {
+        return match ($user->role) {
+            'client' => '/portal',
+            default => '/dashboard',
+        };
     }
 }

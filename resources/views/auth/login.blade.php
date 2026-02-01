@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Gym Coaching Portal</title>
+    <title>Login - Building Her Coaching</title>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
 <body class="login-page">
     <div class="login-container">
         <div class="login-box">
-            <h1>Gym Coaching Portal</h1>
+            <h1>Building Her Coaching</h1>
             <h2>Login</h2>
 
             @if($errors->any())
@@ -32,8 +32,6 @@
 
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
-
-            <p class="login-help">Default: admin / admin123</p>
         </div>
     </div>
 </body>
