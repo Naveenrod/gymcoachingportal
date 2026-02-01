@@ -4,14 +4,10 @@
 
 @section('content')
 <div class="page-header">
-    <h1>Client Check In</h1>
+    <h1>Client Check In List</h1>
 </div>
 
 <div class="checkin-container">
-    <div class="checkin-header">
-        <div class="checkin-logo">Building Her Coaching</div>
-        <div class="checkin-title">2026 Client Check in Spreadsheet</div>
-    </div>
 
     <div class="table-container">
         <table class="checkin-table">
@@ -24,75 +20,45 @@
                     <th>When</th>
                     <th>Submitted</th>
                     <th>Rank</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if($clients->isEmpty())
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 2rem; color: var(--secondary-color);">
+                        <td colspan="8" style="text-align: center; padding: 2rem; color: var(--secondary-color);">
                             No clients found. <a href="{{ route('clients.create') }}">Add a client</a> to get started.
                         </td>
                     </tr>
                 @else
                     @foreach($clients as $client)
                         <tr>
-                            <td class="client-name-cell">{{ $client->full_name }}</td>
-                            <td class="loom-link-cell">
-                                <form method="POST" action="{{ route('checkin.update', $client) }}" class="checkin-form">
-                                    @csrf
-                                    @method('PATCH')
+                            <form method="POST" action="{{ route('checkin.update', $client) }}" class="checkin-form" id="form-{{ $client->id }}">
+                                @csrf
+                                @method('PATCH')
+                                <td class="client-name-cell">{{ $client->full_name }}</td>
+                                <td class="loom-link-cell">
                                     <input type="url" name="loom_link" value="{{ $client->loom_link ?? '' }}" placeholder="https://loom.com/...">
-                                    <input type="hidden" name="package" value="{{ $client->package ?? '' }}">
-                                    <input type="hidden" name="check_in_frequency" value="{{ $client->check_in_frequency ?? '' }}">
-                                    <input type="hidden" name="check_in_day" value="{{ $client->check_in_day ?? '' }}">
-                                    <input type="hidden" name="submitted" value="{{ $client->submitted ?? '' }}">
-                                    <input type="hidden" name="rank" value="{{ $client->rank ?? '' }}">
-                                    <button type="submit" class="btn-save">Save</button>
-                                </form>
-                            </td>
-                            <td class="package-cell">
-                                <form method="POST" action="{{ route('checkin.update', $client) }}" class="checkin-form">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="loom_link" value="{{ $client->loom_link ?? '' }}">
-                                    <select name="package" onchange="this.form.submit()">
+                                </td>
+                                <td class="package-cell">
+                                    <select name="package">
                                         <option value="">Select Package</option>
                                         <option value="Macros & Program" {{ ($client->package ?? '') == 'Macros & Program' ? 'selected' : '' }}>Macros & Program</option>
                                         <option value="Meal Plan & Prog" {{ ($client->package ?? '') == 'Meal Plan & Prog' ? 'selected' : '' }}>Meal Plan & Prog</option>
                                         <option value="Ambassador" {{ ($client->package ?? '') == 'Ambassador' ? 'selected' : '' }}>Ambassador</option>
                                         <option value="Program Only" {{ ($client->package ?? '') == 'Program Only' ? 'selected' : '' }}>Program Only</option>
                                     </select>
-                                    <input type="hidden" name="check_in_frequency" value="{{ $client->check_in_frequency ?? '' }}">
-                                    <input type="hidden" name="check_in_day" value="{{ $client->check_in_day ?? '' }}">
-                                    <input type="hidden" name="submitted" value="{{ $client->submitted ?? '' }}">
-                                    <input type="hidden" name="rank" value="{{ $client->rank ?? '' }}">
-                                </form>
-                            </td>
-                            <td class="frequency-cell">
-                                <form method="POST" action="{{ route('checkin.update', $client) }}" class="checkin-form">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="loom_link" value="{{ $client->loom_link ?? '' }}">
-                                    <input type="hidden" name="package" value="{{ $client->package ?? '' }}">
-                                    <select name="check_in_frequency" onchange="this.form.submit()">
+                                </td>
+                                <td class="frequency-cell">
+                                    <select name="check_in_frequency">
                                         <option value="">Select Frequency</option>
                                         <option value="Weekly" {{ ($client->check_in_frequency ?? '') == 'Weekly' ? 'selected' : '' }}>Weekly</option>
                                         <option value="Fortnightly" {{ ($client->check_in_frequency ?? '') == 'Fortnightly' ? 'selected' : '' }}>Fortnightly</option>
                                         <option value="Monthly" {{ ($client->check_in_frequency ?? '') == 'Monthly' ? 'selected' : '' }}>Monthly</option>
                                     </select>
-                                    <input type="hidden" name="check_in_day" value="{{ $client->check_in_day ?? '' }}">
-                                    <input type="hidden" name="submitted" value="{{ $client->submitted ?? '' }}">
-                                    <input type="hidden" name="rank" value="{{ $client->rank ?? '' }}">
-                                </form>
-                            </td>
-                            <td class="day-cell">
-                                <form method="POST" action="{{ route('checkin.update', $client) }}" class="checkin-form">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="loom_link" value="{{ $client->loom_link ?? '' }}">
-                                    <input type="hidden" name="package" value="{{ $client->package ?? '' }}">
-                                    <input type="hidden" name="check_in_frequency" value="{{ $client->check_in_frequency ?? '' }}">
-                                    <select name="check_in_day" onchange="this.form.submit()">
+                                </td>
+                                <td class="day-cell">
+                                    <select name="check_in_day">
                                         <option value="">Select Day</option>
                                         <option value="Monday" {{ ($client->check_in_day ?? '') == 'Monday' ? 'selected' : '' }}>Monday</option>
                                         <option value="Tuesday" {{ ($client->check_in_day ?? '') == 'Tuesday' ? 'selected' : '' }}>Tuesday</option>
@@ -102,44 +68,28 @@
                                         <option value="Saturday" {{ ($client->check_in_day ?? '') == 'Saturday' ? 'selected' : '' }}>Saturday</option>
                                         <option value="Sunday" {{ ($client->check_in_day ?? '') == 'Sunday' ? 'selected' : '' }}>Sunday</option>
                                     </select>
-                                    <input type="hidden" name="submitted" value="{{ $client->submitted ?? '' }}">
-                                    <input type="hidden" name="rank" value="{{ $client->rank ?? '' }}">
-                                </form>
-                            </td>
-                            <td class="submitted-cell {{ ($client->submitted ?? '') == 'Submitted' ? 'submitted-active' : '' }}">
-                                <form method="POST" action="{{ route('checkin.update', $client) }}" class="checkin-form">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="loom_link" value="{{ $client->loom_link ?? '' }}">
-                                    <input type="hidden" name="package" value="{{ $client->package ?? '' }}">
-                                    <input type="hidden" name="check_in_frequency" value="{{ $client->check_in_frequency ?? '' }}">
-                                    <input type="hidden" name="check_in_day" value="{{ $client->check_in_day ?? '' }}">
-                                    <select name="submitted" onchange="this.form.submit()" class="submitted-select">
+                                </td>
+                                <td class="submitted-cell {{ ($client->submitted ?? '') == 'Submitted' ? 'submitted-active' : '' }}">
+                                    <select name="submitted" class="submitted-select">
                                         <option value="">Not Submitted</option>
                                         <option value="Submitted" {{ ($client->submitted ?? '') == 'Submitted' ? 'selected' : '' }}>Submitted</option>
                                     </select>
-                                    <input type="hidden" name="rank" value="{{ $client->rank ?? '' }}">
-                                </form>
-                            </td>
-                            <td class="rank-cell">
-                                <form method="POST" action="{{ route('checkin.update', $client) }}" class="checkin-form">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="loom_link" value="{{ $client->loom_link ?? '' }}">
-                                    <input type="hidden" name="package" value="{{ $client->package ?? '' }}">
-                                    <input type="hidden" name="check_in_frequency" value="{{ $client->check_in_frequency ?? '' }}">
-                                    <input type="hidden" name="check_in_day" value="{{ $client->check_in_day ?? '' }}">
-                                    <input type="hidden" name="submitted" value="{{ $client->submitted ?? '' }}">
+                                </td>
+                                <td class="rank-cell">
                                     <input type="text" name="rank" value="{{ $client->rank ?? '' }}" placeholder="e.g., 70-100%" style="width: 100px;">
+                                </td>
+                                <td class="actions-cell">
                                     <button type="submit" class="btn-save">Save</button>
-                                </form>
-                            </td>
+                                </td>
+                            </form>
                         </tr>
                     @endforeach
                 @endif
             </tbody>
         </table>
     </div>
+
+    {{ $clients->links() }}
 </div>
 
 @push('scripts')
@@ -148,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Highlight submitted cells with green background - matching Excel
     function updateSubmittedCells() {
         const submittedSelects = document.querySelectorAll('select[name="submitted"]');
-        
+
         submittedSelects.forEach(select => {
             const cell = select.closest('td.submitted-cell');
             if (select.value === 'Submitted') {
@@ -158,11 +108,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     // Update on page load
     updateSubmittedCells();
-    
-    // Update when selects change (before form submit)
+
+    // Update when selects change
     const submittedSelects = document.querySelectorAll('select[name="submitted"]');
     submittedSelects.forEach(select => {
         select.addEventListener('change', function() {

@@ -2,14 +2,10 @@
 
 <?php $__env->startSection('content'); ?>
 <div class="page-header">
-    <h1>Client Check In</h1>
+    <h1>Client Check In List</h1>
 </div>
 
 <div class="checkin-container">
-    <div class="checkin-header">
-        <div class="checkin-logo">Building Her Coaching</div>
-        <div class="checkin-title">2026 Client Check in Spreadsheet</div>
-    </div>
 
     <div class="table-container">
         <table class="checkin-table">
@@ -22,75 +18,45 @@
                     <th>When</th>
                     <th>Submitted</th>
                     <th>Rank</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if($clients->isEmpty()): ?>
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 2rem; color: var(--secondary-color);">
+                        <td colspan="8" style="text-align: center; padding: 2rem; color: var(--secondary-color);">
                             No clients found. <a href="<?php echo e(route('clients.create')); ?>">Add a client</a> to get started.
                         </td>
                     </tr>
                 <?php else: ?>
                     <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td class="client-name-cell"><?php echo e($client->full_name); ?></td>
-                            <td class="loom-link-cell">
-                                <form method="POST" action="<?php echo e(route('checkin.update', $client)); ?>" class="checkin-form">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('PATCH'); ?>
+                            <form method="POST" action="<?php echo e(route('checkin.update', $client)); ?>" class="checkin-form" id="form-<?php echo e($client->id); ?>">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('PATCH'); ?>
+                                <td class="client-name-cell"><?php echo e($client->full_name); ?></td>
+                                <td class="loom-link-cell">
                                     <input type="url" name="loom_link" value="<?php echo e($client->loom_link ?? ''); ?>" placeholder="https://loom.com/...">
-                                    <input type="hidden" name="package" value="<?php echo e($client->package ?? ''); ?>">
-                                    <input type="hidden" name="check_in_frequency" value="<?php echo e($client->check_in_frequency ?? ''); ?>">
-                                    <input type="hidden" name="check_in_day" value="<?php echo e($client->check_in_day ?? ''); ?>">
-                                    <input type="hidden" name="submitted" value="<?php echo e($client->submitted ?? ''); ?>">
-                                    <input type="hidden" name="rank" value="<?php echo e($client->rank ?? ''); ?>">
-                                    <button type="submit" class="btn-save">Save</button>
-                                </form>
-                            </td>
-                            <td class="package-cell">
-                                <form method="POST" action="<?php echo e(route('checkin.update', $client)); ?>" class="checkin-form">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('PATCH'); ?>
-                                    <input type="hidden" name="loom_link" value="<?php echo e($client->loom_link ?? ''); ?>">
-                                    <select name="package" onchange="this.form.submit()">
+                                </td>
+                                <td class="package-cell">
+                                    <select name="package">
                                         <option value="">Select Package</option>
                                         <option value="Macros & Program" <?php echo e(($client->package ?? '') == 'Macros & Program' ? 'selected' : ''); ?>>Macros & Program</option>
                                         <option value="Meal Plan & Prog" <?php echo e(($client->package ?? '') == 'Meal Plan & Prog' ? 'selected' : ''); ?>>Meal Plan & Prog</option>
                                         <option value="Ambassador" <?php echo e(($client->package ?? '') == 'Ambassador' ? 'selected' : ''); ?>>Ambassador</option>
                                         <option value="Program Only" <?php echo e(($client->package ?? '') == 'Program Only' ? 'selected' : ''); ?>>Program Only</option>
                                     </select>
-                                    <input type="hidden" name="check_in_frequency" value="<?php echo e($client->check_in_frequency ?? ''); ?>">
-                                    <input type="hidden" name="check_in_day" value="<?php echo e($client->check_in_day ?? ''); ?>">
-                                    <input type="hidden" name="submitted" value="<?php echo e($client->submitted ?? ''); ?>">
-                                    <input type="hidden" name="rank" value="<?php echo e($client->rank ?? ''); ?>">
-                                </form>
-                            </td>
-                            <td class="frequency-cell">
-                                <form method="POST" action="<?php echo e(route('checkin.update', $client)); ?>" class="checkin-form">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('PATCH'); ?>
-                                    <input type="hidden" name="loom_link" value="<?php echo e($client->loom_link ?? ''); ?>">
-                                    <input type="hidden" name="package" value="<?php echo e($client->package ?? ''); ?>">
-                                    <select name="check_in_frequency" onchange="this.form.submit()">
+                                </td>
+                                <td class="frequency-cell">
+                                    <select name="check_in_frequency">
                                         <option value="">Select Frequency</option>
                                         <option value="Weekly" <?php echo e(($client->check_in_frequency ?? '') == 'Weekly' ? 'selected' : ''); ?>>Weekly</option>
                                         <option value="Fortnightly" <?php echo e(($client->check_in_frequency ?? '') == 'Fortnightly' ? 'selected' : ''); ?>>Fortnightly</option>
                                         <option value="Monthly" <?php echo e(($client->check_in_frequency ?? '') == 'Monthly' ? 'selected' : ''); ?>>Monthly</option>
                                     </select>
-                                    <input type="hidden" name="check_in_day" value="<?php echo e($client->check_in_day ?? ''); ?>">
-                                    <input type="hidden" name="submitted" value="<?php echo e($client->submitted ?? ''); ?>">
-                                    <input type="hidden" name="rank" value="<?php echo e($client->rank ?? ''); ?>">
-                                </form>
-                            </td>
-                            <td class="day-cell">
-                                <form method="POST" action="<?php echo e(route('checkin.update', $client)); ?>" class="checkin-form">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('PATCH'); ?>
-                                    <input type="hidden" name="loom_link" value="<?php echo e($client->loom_link ?? ''); ?>">
-                                    <input type="hidden" name="package" value="<?php echo e($client->package ?? ''); ?>">
-                                    <input type="hidden" name="check_in_frequency" value="<?php echo e($client->check_in_frequency ?? ''); ?>">
-                                    <select name="check_in_day" onchange="this.form.submit()">
+                                </td>
+                                <td class="day-cell">
+                                    <select name="check_in_day">
                                         <option value="">Select Day</option>
                                         <option value="Monday" <?php echo e(($client->check_in_day ?? '') == 'Monday' ? 'selected' : ''); ?>>Monday</option>
                                         <option value="Tuesday" <?php echo e(($client->check_in_day ?? '') == 'Tuesday' ? 'selected' : ''); ?>>Tuesday</option>
@@ -100,44 +66,29 @@
                                         <option value="Saturday" <?php echo e(($client->check_in_day ?? '') == 'Saturday' ? 'selected' : ''); ?>>Saturday</option>
                                         <option value="Sunday" <?php echo e(($client->check_in_day ?? '') == 'Sunday' ? 'selected' : ''); ?>>Sunday</option>
                                     </select>
-                                    <input type="hidden" name="submitted" value="<?php echo e($client->submitted ?? ''); ?>">
-                                    <input type="hidden" name="rank" value="<?php echo e($client->rank ?? ''); ?>">
-                                </form>
-                            </td>
-                            <td class="submitted-cell <?php echo e(($client->submitted ?? '') == 'Submitted' ? 'submitted-active' : ''); ?>">
-                                <form method="POST" action="<?php echo e(route('checkin.update', $client)); ?>" class="checkin-form">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('PATCH'); ?>
-                                    <input type="hidden" name="loom_link" value="<?php echo e($client->loom_link ?? ''); ?>">
-                                    <input type="hidden" name="package" value="<?php echo e($client->package ?? ''); ?>">
-                                    <input type="hidden" name="check_in_frequency" value="<?php echo e($client->check_in_frequency ?? ''); ?>">
-                                    <input type="hidden" name="check_in_day" value="<?php echo e($client->check_in_day ?? ''); ?>">
-                                    <select name="submitted" onchange="this.form.submit()" class="submitted-select">
+                                </td>
+                                <td class="submitted-cell <?php echo e(($client->submitted ?? '') == 'Submitted' ? 'submitted-active' : ''); ?>">
+                                    <select name="submitted" class="submitted-select">
                                         <option value="">Not Submitted</option>
                                         <option value="Submitted" <?php echo e(($client->submitted ?? '') == 'Submitted' ? 'selected' : ''); ?>>Submitted</option>
                                     </select>
-                                    <input type="hidden" name="rank" value="<?php echo e($client->rank ?? ''); ?>">
-                                </form>
-                            </td>
-                            <td class="rank-cell">
-                                <form method="POST" action="<?php echo e(route('checkin.update', $client)); ?>" class="checkin-form">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('PATCH'); ?>
-                                    <input type="hidden" name="loom_link" value="<?php echo e($client->loom_link ?? ''); ?>">
-                                    <input type="hidden" name="package" value="<?php echo e($client->package ?? ''); ?>">
-                                    <input type="hidden" name="check_in_frequency" value="<?php echo e($client->check_in_frequency ?? ''); ?>">
-                                    <input type="hidden" name="check_in_day" value="<?php echo e($client->check_in_day ?? ''); ?>">
-                                    <input type="hidden" name="submitted" value="<?php echo e($client->submitted ?? ''); ?>">
+                                </td>
+                                <td class="rank-cell">
                                     <input type="text" name="rank" value="<?php echo e($client->rank ?? ''); ?>" placeholder="e.g., 70-100%" style="width: 100px;">
+                                </td>
+                                <td class="actions-cell">
                                     <button type="submit" class="btn-save">Save</button>
-                                </form>
-                            </td>
+                                </td>
+                            </form>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <?php endif; ?>
             </tbody>
         </table>
     </div>
+
+    <?php echo e($clients->links()); ?>
+
 </div>
 
 <?php $__env->startPush('scripts'); ?>
@@ -146,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Highlight submitted cells with green background - matching Excel
     function updateSubmittedCells() {
         const submittedSelects = document.querySelectorAll('select[name="submitted"]');
-        
+
         submittedSelects.forEach(select => {
             const cell = select.closest('td.submitted-cell');
             if (select.value === 'Submitted') {
@@ -156,11 +107,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     // Update on page load
     updateSubmittedCells();
-    
-    // Update when selects change (before form submit)
+
+    // Update when selects change
     const submittedSelects = document.querySelectorAll('select[name="submitted"]');
     submittedSelects.forEach(select => {
         select.addEventListener('change', function() {

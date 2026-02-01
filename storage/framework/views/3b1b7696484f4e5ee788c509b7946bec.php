@@ -3,7 +3,7 @@
 <?php $__env->startSection('content'); ?>
 <div class="page-header">
     <h1>Dashboard</h1>
-    <p>Welcome back, <?php echo e(session('full_name')); ?>!</p>
+    <p>Welcome back, <?php echo e(Auth::user()->full_name); ?>!</p>
 </div>
 
 <div class="stats-row">

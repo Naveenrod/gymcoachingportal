@@ -5,7 +5,7 @@
 @section('content')
 <div class="page-header">
     <h1>Dashboard</h1>
-    <p>Welcome back, {{ session('full_name') }}!</p>
+    <p>Welcome back, {{ Auth::user()->full_name }}!</p>
 </div>
 
 <div class="stats-row">
