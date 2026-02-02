@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ClientPortalController extends Controller
 {
@@ -11,7 +11,7 @@ class ClientPortalController extends Controller
     {
         $client = Auth::user()->client;
 
-        if (!$client) {
+        if (! $client) {
             return view('portal.no-profile');
         }
 
@@ -30,7 +30,7 @@ class ClientPortalController extends Controller
     {
         $client = Auth::user()->client;
 
-        if (!$client) {
+        if (! $client) {
             return view('portal.no-profile');
         }
 
@@ -46,7 +46,7 @@ class ClientPortalController extends Controller
     {
         $client = Auth::user()->client;
 
-        if (!$client) {
+        if (! $client) {
             return view('portal.no-profile');
         }
 

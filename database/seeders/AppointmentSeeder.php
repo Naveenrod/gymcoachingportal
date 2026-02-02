@@ -14,6 +14,7 @@ class AppointmentSeeder extends Seeder
 
         if ($clients->isEmpty()) {
             $this->command->warn('No clients found. Skipping appointment seeding.');
+
             return;
         }
 

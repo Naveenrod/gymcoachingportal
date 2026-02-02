@@ -10,6 +10,7 @@ class HealthController extends Controller
     {
         try {
             DB::connection()->getPdo();
+
             return response()->json([
                 'status' => 'healthy',
                 'database' => 'connected',

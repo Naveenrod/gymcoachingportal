@@ -21,7 +21,7 @@ class AppointmentController extends Controller
             $search = $request->search;
             $query->whereHas('client', function ($q) use ($search) {
                 $q->where('first_name', 'like', "%{$search}%")
-                  ->orWhere('last_name', 'like', "%{$search}%");
+                    ->orWhere('last_name', 'like', "%{$search}%");
             });
         }
 
@@ -48,6 +48,7 @@ class AppointmentController extends Controller
     {
         $clients = Client::orderBy('last_name')->orderBy('first_name')->get();
         $selectedClientId = $request->get('client_id');
+
         return view('appointments.create', compact('clients', 'selectedClientId'));
     }
 
@@ -65,12 +66,14 @@ class AppointmentController extends Controller
     public function show(Appointment $appointment)
     {
         $appointment->load('client');
+
         return view('appointments.show', compact('appointment'));
     }
 
     public function edit(Appointment $appointment)
     {
         $clients = Client::orderBy('last_name')->orderBy('first_name')->get();
+
         return view('appointments.edit', compact('appointment', 'clients'));
     }
 
