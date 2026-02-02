@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,26 @@ class AuthController extends Controller
             return redirect($this->redirectBasedOnRole(Auth::user()));
         }
 
-        return view('auth.login');
+        $devUsers = [];
+        if (app()->environment('local')) {
+            $devUsers = User::orderByRaw("CASE role WHEN 'admin' THEN 1 WHEN 'coach' THEN 2 WHEN 'client' THEN 3 ELSE 4 END")
+                ->get(['id', 'username', 'full_name', 'role']);
+        }
+
+        return view('auth.login', compact('devUsers'));
+    }
+
+    public function devLogin(Request $request)
+    {
+        abort_unless(app()->environment('local'), 403);
+
+        $request->validate(['user_id' => 'required|exists:users,id']);
+
+        $user = User::findOrFail($request->user_id);
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect($this->redirectBasedOnRole($user));
     }
 
     public function login(Request $request)
