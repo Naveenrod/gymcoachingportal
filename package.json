@@ -1,0 +1,11 @@
+{
+    "private": true,
+    "name": "gym-coaching-portal",
+    "description": "Building Her Coaching - Gym Client Management Portal",
+    "scripts": {
+        "dev": "php artisan serve",
+        "start": "php artisan serve",
+        "fresh": "php artisan migrate:fresh --seed",
+        "test": "php artisan test"
+    }
+}
