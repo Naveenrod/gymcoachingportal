@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
 use App\Models\Client;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
@@ -11,21 +16,21 @@ class ClientController extends Controller
     {
         $query = Client::query();
 
-        if ($request->has('search') && $request->search) {
+        if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('first_name', 'like', "%{$search}%")
-                  ->orWhere('last_name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
             });
         }
 
-        if ($request->has('status') && $request->status) {
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        $clients = $query->orderBy('last_name')->orderBy('first_name')->get();
+        $clients = $query->orderBy('last_name')->orderBy('first_name')->paginate(25);
 
         return view('clients.index', compact('clients'));
     }
@@ -35,26 +40,13 @@ class ClientController extends Controller
         return view('clients.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreClientRequest $request)
     {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:50',
-            'last_name' => 'required|string|max:50',
-            'email' => 'required|email|unique:clients,email',
-            'phone' => 'nullable|string|max:20',
-            'date_of_birth' => 'nullable|date',
-            'gender' => 'nullable|in:Male,Female,Other',
-            'address' => 'nullable|string',
-            'emergency_contact_name' => 'nullable|string|max:100',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-            'membership_type' => 'required|in:Basic,Premium,VIP',
-            'membership_start_date' => 'nullable|date',
-            'membership_end_date' => 'nullable|date',
-            'notes' => 'nullable|string',
-            'status' => 'required|in:Active,Inactive,On Hold',
-        ]);
+        $client = DB::transaction(function () use ($request) {
+            return Client::create($request->validated());
+        });
 
-        Client::create($validated);
+        Log::info('Client created', ['client_id' => $client->id, 'user_id' => Auth::id()]);
 
         return redirect()->route('clients.index')->with('success', 'Client created successfully.');
     }
@@ -62,6 +54,7 @@ class ClientController extends Controller
     public function show(Client $client)
     {
         $client->load('appointments');
+
         return view('clients.show', compact('client'));
     }
 
@@ -70,33 +63,23 @@ class ClientController extends Controller
         return view('clients.edit', compact('client'));
     }
 
-    public function update(Request $request, Client $client)
+    public function update(UpdateClientRequest $request, Client $client)
     {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:50',
-            'last_name' => 'required|string|max:50',
-            'email' => 'required|email|unique:clients,email,' . $client->id,
-            'phone' => 'nullable|string|max:20',
-            'date_of_birth' => 'nullable|date',
-            'gender' => 'nullable|in:Male,Female,Other',
-            'address' => 'nullable|string',
-            'emergency_contact_name' => 'nullable|string|max:100',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-            'membership_type' => 'required|in:Basic,Premium,VIP',
-            'membership_start_date' => 'nullable|date',
-            'membership_end_date' => 'nullable|date',
-            'notes' => 'nullable|string',
-            'status' => 'required|in:Active,Inactive,On Hold',
-        ]);
+        DB::transaction(function () use ($client, $request) {
+            $client->update($request->validated());
+        });
 
-        $client->update($validated);
+        Log::info('Client updated', ['client_id' => $client->id, 'user_id' => Auth::id()]);
 
         return redirect()->route('clients.index')->with('success', 'Client updated successfully.');
     }
 
     public function destroy(Client $client)
     {
+        Log::warning('Client deleted', ['client_id' => $client->id, 'name' => $client->full_name, 'user_id' => Auth::id()]);
+
         $client->delete();
+
         return redirect()->route('clients.index')->with('success', 'Client deleted successfully.');
     }
 }

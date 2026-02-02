@@ -6,6 +6,13 @@
     <a href="<?php echo e(route('clients.create')); ?>" class="btn btn-primary">Add New Client</a>
 </div>
 
+<div class="stats-row">
+    <div class="stat-card">
+        <h3><?php echo e($clients->total()); ?></h3>
+        <p>Total Clients</p>
+    </div>
+</div>
+
 <div class="filters">
     <form method="GET" action="" class="filter-form">
         <input type="text" name="search" placeholder="Search clients..." value="<?php echo e(request('search')); ?>">
@@ -20,13 +27,6 @@
             <a href="<?php echo e(route('clients.index')); ?>" class="btn btn-secondary">Clear</a>
         <?php endif; ?>
     </form>
-</div>
-
-<div class="stats-row">
-    <div class="stat-card">
-        <h3><?php echo e($clients->count()); ?></h3>
-        <p>Total Clients</p>
-    </div>
 </div>
 
 <div class="table-container">
@@ -69,6 +69,9 @@
         </tbody>
     </table>
 </div>
+
+<?php echo e($clients->appends(request()->query())->links()); ?>
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Users/naveenrodrigo/gymcoachingportal/resources/views/clients/index.blade.php ENDPATH**/ ?>

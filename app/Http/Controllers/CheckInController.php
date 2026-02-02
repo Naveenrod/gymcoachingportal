@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateCheckInRequest;
 use App\Models\Client;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CheckInController extends Controller
 {
     public function index()
     {
-        $clients = Client::orderBy('last_name')->orderBy('first_name')->get();
+        $clients = Client::orderBy('last_name')->orderBy('first_name')->paginate(25);
+
         return view('checkin.index', compact('clients'));
     }
 
-    public function update(Request $request, Client $client)
+    public function update(UpdateCheckInRequest $request, Client $client)
     {
-        $validated = $request->validate([
-            'loom_link' => 'nullable|url|max:500',
-            'package' => 'nullable|string|max:100',
-            'check_in_frequency' => 'nullable|string|max:50',
-            'check_in_day' => 'nullable|string|max:50',
-            'submitted' => 'nullable|in:Submitted,',
-            'rank' => 'nullable|string|max:50',
-        ]);
+        $validated = $request->validated();
 
-        // Only update provided fields
-        $updateData = array_filter($validated, function($value) {
+        $updateData = array_filter($validated, function ($value) {
             return $value !== null && $value !== '';
         });
-        
-        $client->update($updateData);
+
+        DB::transaction(function () use ($client, $updateData) {
+            $client->update($updateData);
+        });
+
+        Log::info('Check-in updated', ['client_id' => $client->id, 'user_id' => Auth::id()]);
 
         return redirect()->route('checkin.index')->with('success', 'Check-in data updated successfully.');
     }
