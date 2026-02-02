@@ -19,6 +19,11 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Dev-only quick login (only available in local environment)
+if (app()->environment('local')) {
+    Route::post('/dev-login', [AuthController::class, 'devLogin'])->name('dev.login');
+}
+
 // Health check
 Route::get('/health', HealthController::class);
 
