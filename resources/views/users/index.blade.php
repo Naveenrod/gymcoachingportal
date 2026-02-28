@@ -8,6 +8,7 @@
     <a href="{{ route('users.create') }}" class="btn btn-primary">Add User</a>
 </div>
 
+<div class="table-responsive">
 <div class="table-container">
     <table class="data-table">
         <thead>
@@ -46,6 +47,7 @@
             @endforelse
         </tbody>
     </table>
+</div>
 </div>
 
 {{ $users->links() }}

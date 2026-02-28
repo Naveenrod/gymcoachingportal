@@ -7,6 +7,7 @@
     <h1>My Appointments</h1>
 </div>
 
+<div class="table-responsive">
 <div class="table-container">
     <table class="data-table">
         <thead>
@@ -36,6 +37,7 @@
             @endforelse
         </tbody>
     </table>
+</div>
 </div>
 
 {{ $appointments->links() }}
