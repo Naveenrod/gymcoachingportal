@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('status', ['Scheduled', 'Completed', 'Cancelled', 'No-Show'])->default('Scheduled');
             $table->text('notes')->nullable();
             $table->timestamps();
-            
+
             $table->index('appointment_date');
             $table->index('client_id');
         });

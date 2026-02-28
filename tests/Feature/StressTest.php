@@ -66,7 +66,7 @@ class StressTest extends TestCase
             $hour = str_pad(8 + ($i % 12), 2, '0', STR_PAD_LEFT);
             $this->actingAs($user)->post('/appointments', [
                 'client_id' => $client->id,
-                'appointment_date' => "2025-06-" . str_pad($i + 1, 2, '0', STR_PAD_LEFT),
+                'appointment_date' => '2025-06-'.str_pad($i + 1, 2, '0', STR_PAD_LEFT),
                 'appointment_time' => "{$hour}:00",
                 'duration_minutes' => 60,
                 'session_type' => 'Personal Training',

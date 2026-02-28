@@ -13,6 +13,7 @@ class CheckInController extends Controller
     public function index()
     {
         $clients = Client::orderBy('last_name')->orderBy('first_name')->paginate(25);
+
         return view('checkin.index', compact('clients'));
     }
 

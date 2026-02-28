@@ -858,9 +858,9 @@ table a:hover {
     background-color: var(--bg-color);
 }
 
-/* Ensure submitted cells maintain green even on hover */
-.checkin-table tbody tr:hover td.submitted-cell.submitted-active,
-.checkin-table tbody tr:nth-child(even):hover td.submitted-cell.submitted-active {
+/* Ensure submitted select maintains green even on row hover */
+.checkin-table tbody tr:hover td.submitted-cell.submitted-active select,
+.checkin-table tbody tr:nth-child(even):hover td.submitted-cell.submitted-active select {
     background-color: #d1fae5 !important;
 }
 
@@ -960,9 +960,8 @@ table a:hover {
     transition: background-color 0.2s;
 }
 
-/* Green background for submitted cells */
+/* Green background applied only to the select, not the cell */
 .submitted-cell.submitted-active {
-    background-color: #d1fae5 !important;
 }
 
 .submitted-cell select {
@@ -1238,4 +1237,27 @@ table a:hover {
     table td.actions {
         flex-direction: column;
     }
+}
+
+/* Validation error message */
+.error {
+    color: var(--danger-color);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Required field asterisk */
+.required {
+    color: var(--danger-color);
+    margin-left: 0.15rem;
+}
+
+/* Detail card (appointment show, portal profile) */
+.detail-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
 }
